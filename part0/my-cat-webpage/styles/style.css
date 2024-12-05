@@ -79,7 +79,8 @@ textarea {
 
 .button {
   /* Align buttons with the text fields */
-  padding-left: 1px; /* same size as the label elements */
+  /*padding-left: -1px; /* same size as the label elements */
+  margin-left: -6px;
 }
 
 button {
