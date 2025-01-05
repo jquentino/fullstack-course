@@ -16,7 +16,7 @@ const Button = ({content, onClick}) => {
   )
 }
 
-const Display = ({content, votes}) => <div>{content} {votes}</div>
+const Display = ({content, number}) => <div>{content} {number}</div>
 
 const handleButtonClickFactory = (currState, setState) => {
   // add 1 to the button current state
@@ -29,7 +29,13 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-
+  const total = good + neutral + bad
+  let avg = 0
+  let positivePercent = 0
+  if (total != 0) { 
+    avg = (good - bad) / total
+    positivePercent = good/total * 100 
+  }
   return (
     <div>
       <Header content={'give feedback'}/>
@@ -38,9 +44,12 @@ const App = () => {
       <Button content={'bad'} onClick={handleButtonClickFactory(bad, setBad)}/>
       
       <Header content={'statistics'}/>
-      <Display content={'good'} votes={good}/>
-      <Display content={'neutral'} votes={neutral}/>
-      <Display content={'bad'} votes={bad}/>
+      <Display content={'good'} number={good}/>
+      <Display content={'neutral'} number={neutral}/>
+      <Display content={'bad'} number={bad}/>
+      <Display content={'all'} number={total}/>
+      <Display content={'average'} number={avg}/>
+      <Display content={'positive'} number={positivePercent + '%'}/>
     </div>
   )
 }
