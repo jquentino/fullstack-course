@@ -16,7 +16,7 @@ const Button = ({ content, onClick }) => {
   )
 }
 
-const Display = ({ content, number }) => <div>{content} {number}</div>
+const StatisticLine = ({ text, value }) => <div>{text} {value}</div>
 
 const Statistics = ({ good, bad, neutral }) => {
   const total = good + neutral + bad
@@ -27,23 +27,17 @@ const Statistics = ({ good, bad, neutral }) => {
     positivePercent = good / total * 100
     return (
       <div>
-        <Header content={'statistics'} />
-        <Display content={'good'} number={good} />
-        <Display content={'neutral'} number={neutral} />
-        <Display content={'bad'} number={bad} />
-        <Display content={'all'} number={total} />
-        <Display content={'average'} number={avg} />
-        <Display content={'positive'} number={positivePercent + '%'} />
+        <StatisticLine text={'good'} value={good} />
+        <StatisticLine text={'neutral'} value={neutral} />
+        <StatisticLine text={'bad'} value={bad} />
+        <StatisticLine text={'all'} value={total} />
+        <StatisticLine text={'average'} value={avg} />
+        <StatisticLine text={'positive'} value={positivePercent + '%'} />
       </div>
     )
   }
   else {
-    return (
-      <div>
-        <Header content={'statistics'} />
-        <div>No feedback given</div>
-      </div>
-    )
+    return <div>No feedback given</div>
   }
 }
 
@@ -65,6 +59,8 @@ const App = () => {
       <Button content={'good'} onClick={handleButtonClickFactory(good, setGood)} />
       <Button content={'neutral'} onClick={handleButtonClickFactory(neutral, setNeutral)} />
       <Button content={'bad'} onClick={handleButtonClickFactory(bad, setBad)} />
+      
+      <Header content={'statistics'} />
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
