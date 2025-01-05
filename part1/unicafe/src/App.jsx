@@ -25,18 +25,26 @@ const Statistics = ({ good, bad, neutral }) => {
   if (total != 0) {
     avg = (good - bad) / total
     positivePercent = good / total * 100
+    return (
+      <div>
+        <Header content={'statistics'} />
+        <Display content={'good'} number={good} />
+        <Display content={'neutral'} number={neutral} />
+        <Display content={'bad'} number={bad} />
+        <Display content={'all'} number={total} />
+        <Display content={'average'} number={avg} />
+        <Display content={'positive'} number={positivePercent + '%'} />
+      </div>
+    )
   }
-  return (
-    <div>
-      <Header content={'statistics'} />
-      <Display content={'good'} number={good} />
-      <Display content={'neutral'} number={neutral} />
-      <Display content={'bad'} number={bad} />
-      <Display content={'all'} number={total} />
-      <Display content={'average'} number={avg} />
-      <Display content={'positive'} number={positivePercent + '%'} />
-    </div>
-  )
+  else {
+    return (
+      <div>
+        <Header content={'statistics'} />
+        <div>No feedback given</div>
+      </div>
+    )
+  }
 }
 
 const handleButtonClickFactory = (currState, setState) => {
