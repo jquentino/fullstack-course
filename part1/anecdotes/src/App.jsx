@@ -51,6 +51,7 @@ const App = () => {
   return (
     <div>
       {anecdotes[selected]}
+      <p>has {pointsArray[selected]} votes</p>
       <div>
         <Button
           text={'vote'}
