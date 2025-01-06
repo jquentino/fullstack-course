@@ -1,8 +1,20 @@
 import { useState } from 'react'
 
 
+const Header = ({ text }) => <h1>{text}</h1>
+
 const Button = ({ text, onClick }) => {
   return <button onClick={onClick}>{text}</button>
+}
+
+const Anecdote = ({ title, content, votes }) => {
+  return (
+    <div>
+      <Header text={title}/>
+      <div>{content}</div>
+      <p>has {votes} votes</p>
+    </div>
+  )
 }
 
 const getRandomInt = (max) => {
@@ -46,12 +58,17 @@ const App = () => {
   const lenAnecdotes = anecdotes.length
   const initialPointsArray = Array(lenAnecdotes).fill(0)
   const [pointsArray, setPointsArray] = useState(initialPointsArray)
-  console.log('rendered index', selected)
-  console.log('array', pointsArray)
+  const mostVotedIndex = pointsArray.reduce(
+    (maxIdx, value, idx, array) => value > array[maxIdx] ? idx : maxIdx, 0
+  )
+  
   return (
     <div>
-      {anecdotes[selected]}
-      <p>has {pointsArray[selected]} votes</p>
+      <Anecdote
+        title={'Anecdote of the day'}
+        content={anecdotes[selected]}
+        votes={pointsArray[selected]}
+      />
       <div>
         <Button
           text={'vote'}
@@ -62,6 +79,11 @@ const App = () => {
           onClick={handleNextBtnClick(lenAnecdotes, setSelected)}
         />
       </div>
+      <Anecdote
+        title={'Anecdote with most votes'}
+        content={anecdotes[mostVotedIndex]}
+        votes={pointsArray[mostVotedIndex]}
+      />
     </div>
   )
 }
