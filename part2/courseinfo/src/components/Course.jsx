@@ -6,7 +6,6 @@ const Course = ({ course }) => {
         <div>
             <Header course={course.name} />
             <Content array_of_items={course.parts} />
-            {/* <Total array_of_items={items}/> */}
         </div>
     )
 }
