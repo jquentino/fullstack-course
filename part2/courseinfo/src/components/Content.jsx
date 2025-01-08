@@ -1,5 +1,5 @@
 import Part from "./Part";
-
+import Total from "./Total";
 const Content = ({ array_of_items }) => {
   return (
     <div>
@@ -8,6 +8,7 @@ const Content = ({ array_of_items }) => {
           <Part key={item.id} name={item.name} exercises={item.exercises} />))
         }
       </ul>
+      <Total array_of_items={array_of_items}/>
     </div>
   );
 };
