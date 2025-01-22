@@ -9,8 +9,6 @@ export const FormsAdd = (
 		handleNumberChange
 	}) => {
 	return (
-    <div>
-      <h2>add a new</h2>
       <form onSubmit={handleSubmit}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -22,6 +20,5 @@ export const FormsAdd = (
           <button type="submit">add</button>
         </div>
       </form>
-    </div>
 	)
 }

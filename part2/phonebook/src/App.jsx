@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import { Contact } from './components/contact'
 import { FormsAdd } from './components/FormsAdd'
 import { Filter } from './components/Filter'
-
+import { ContactsList } from './components/ContactsList'
 
 const App = () => {
 
@@ -39,8 +38,7 @@ const App = () => {
     const NumberAlreadyAdded = persons.some(
       (person) => person.number == newNumber
     )
-    // console.log('NameAreadyAdded', NameAreadyAdded)
-    // console.log('newName', newName)    
+
     if (NameAreadyAdded) {
       alert(`${newName} is already added to phonebook`)
     } else if (NumberAlreadyAdded ) {
@@ -55,25 +53,16 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     }
-    // console.log(persons)
-  }
-  const getContactToDisplay = (contacts, filterValue) => {
-      const contactsFiltered = contacts.filter(
-        (ctc) => ctc.name.toLowerCase().startsWith(filterValue.toLowerCase())
-      )
-      return (contactsFiltered.map(
-        (person, index) => <Contact
-          key={index}
-          name={person.name}
-          number={person.number}
-        />
-      ))
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      
       <Filter value={newFilter} handleValueChange={handleFilterChange}/>
+      
+      <h3>add a new</h3>
+      
       <FormsAdd
         handleSubmit={handleSubmit}
         newName={newName}
@@ -81,8 +70,10 @@ const App = () => {
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
         />
-      <h2>Numbers</h2>
-      {getContactToDisplay(persons, newFilter)}
+      <h3>Numbers</h3>
+
+      <ContactsList contacts={persons} filterValue={newFilter}/>
+    
     </div>
   )
 }
