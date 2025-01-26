@@ -6,8 +6,8 @@ export const ContactsList = ({contacts, filterValue}) => {
     (ctc) => ctc.name.toLowerCase().startsWith(filterValue.toLowerCase())
   )
   return (contactsFiltered.map(
-    (person, index) => <Contact
-      key={index}
+    (person) => <Contact
+      key={person.id}
       name={person.name}
       number={person.number}
     />
