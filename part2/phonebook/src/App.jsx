@@ -66,6 +66,14 @@ const App = () => {
     }
   }
 
+  const handleDeleteBtn = (id) => {
+    contactService.del(id).then(
+      setPersonContact(
+        persons.filter((p) => p.id != id)
+      )
+    )
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -83,7 +91,7 @@ const App = () => {
       />
       <h3>Numbers</h3>
 
-      <ContactsList contacts={persons} filterValue={newFilter} />
+      <ContactsList contacts={persons} filterValue={newFilter} handleDeleteBtn={handleDeleteBtn}/>
 
     </div>
   )

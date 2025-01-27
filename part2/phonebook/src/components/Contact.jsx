@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Contact = ({ name, number }) => {
+export const Contact = ({ id, name, number, handleDeleteBtn }) => {
   return (
-    <div>{name} {number}</div>
+    <div>
+      {name} {number} <button onClick={() => {handleDeleteBtn(id)}}>delete</button>
+    </div>
   )
 }
