@@ -31,17 +31,38 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const checkToUpdateContact = (personToUpdate) => {
+    if (confirm(`Do you want to update the contact of ${newName}`)){
+      // const personToUpdate = persons.find(p => p.name === name)
+      const changedPerson = {...personToUpdate, number: newNumber}
+      contactService.update(changedPerson)
+        .then(
+          (contactReturned) => {
+            setPersonContact(persons.map(p => p.id === contactReturned.id ? contactReturned : p))
+            resetFields()
+          }
+        )
+    } else {
+      console.log('update contact operation canceled')
+    }
+  }
+
+  const resetFields = () => {
+    setNewName('')
+    setNewNumber('')
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    const NameAreadyAdded = persons.some(
-      (person) => person.name === newName
-    )
+    const personMatched = persons.find(p => p.name === newName)
+    const NameAreadyAdded = typeof(personMatched) !== 'undefined'
     const NumberAlreadyAdded = persons.some(
       (person) => person.number == newNumber
     )
 
     if (NameAreadyAdded) {
-      alert(`${newName} is already added to phonebook`)
+      // alert(`${newName} is already added to phonebook`)
+      checkToUpdateContact(personMatched)
     } else if (NumberAlreadyAdded) {
       alert(`The number ${newNumber} is already added to the phonebook`)
     } else if (newName === '') {
@@ -58,8 +79,7 @@ const App = () => {
         contactObject
       ).then(data => {
         setPersonContact(persons.concat(data))
-        setNewName('')
-        setNewNumber('')
+        resetFields()
       }).catch(
         response => { alert(`Error to add case in the server ${response}`) }
       )

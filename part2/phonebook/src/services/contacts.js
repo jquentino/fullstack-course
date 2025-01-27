@@ -19,4 +19,10 @@ const del = (id) => {
     delete(`${baseUrl}/${id}`)
 }
 
-export default { getAll, create, del }
+const update = (contactObject) => {
+  return axios
+    .put(`${baseUrl}/${contactObject.id}`, contactObject)
+    .then(response => response.data)
+}
+
+export default { getAll, create, del, update }
