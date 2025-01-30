@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { FormsAdd } from './components/FormsAdd'
 import { Filter } from './components/Filter'
 import { ContactsList } from './components/ContactsList'
+import { Notification } from './components/Notification'
 import contactService from './services/contacts'
 
 const App = () => {
@@ -13,6 +14,10 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
 
   const [newFilter, setFilter] = useState('')
+
+  const [notificationObj, setNotificationMessage] = useState(
+    {type: null, message: null}
+  )
 
   useEffect(() => {
     contactService.getAll()
@@ -40,11 +45,31 @@ const App = () => {
           (contactReturned) => {
             setPersonContact(persons.map(p => p.id === contactReturned.id ? contactReturned : p))
             resetFields()
+            setNotificationMessage({
+              type:'success',
+              message:`Contact of ${contactReturned.name} was updated!`})
           }
         )
     } else {
       console.log('update contact operation canceled')
     }
+  }
+
+  const AddNewContact = () => {
+    const contactObject = {
+      name: newName,
+      number: newNumber
+    }
+    contactService.create(
+      contactObject
+    ).then(data => {
+      setPersonContact(persons.concat(data))
+      resetFields()
+      setNotificationMessage({type:'success', message:`Added ${data.name}`})
+      // TODO: Make notification disappear after certain condition
+    }).catch(
+      response => { alert(`Error to add case in the server ${response}`) }
+    )
   }
 
   const resetFields = () => {
@@ -64,25 +89,14 @@ const App = () => {
       // alert(`${newName} is already added to phonebook`)
       checkToUpdateContact(personMatched)
     } else if (NumberAlreadyAdded) {
-      alert(`The number ${newNumber} is already added to the phonebook`)
+      alert(`The number ${newNumber} is already added to the phonebook`) // TODO: Change these alerts by Notification
     } else if (newName === '') {
       alert(`You can't add a empty name`)
     } else if (newNumber === '') {
       alert(`You can't add a empty number`)
     }
     else {
-      const contactObject = {
-        name: newName,
-        number: newNumber
-      }
-      contactService.create(
-        contactObject
-      ).then(data => {
-        setPersonContact(persons.concat(data))
-        resetFields()
-      }).catch(
-        response => { alert(`Error to add case in the server ${response}`) }
-      )
+      AddNewContact()
     }
   }
 
@@ -97,6 +111,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification messageObj={notificationObj}/>
 
       <Filter value={newFilter} handleValueChange={handleFilterChange} />
 
