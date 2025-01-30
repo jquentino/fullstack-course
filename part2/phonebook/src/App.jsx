@@ -15,8 +15,9 @@ const App = () => {
 
   const [newFilter, setFilter] = useState('')
 
+  const NULL_NOTIFICATION_OBJ = {type: null, message: null}
   const [notificationObj, setNotificationMessage] = useState(
-    {type: null, message: null}
+    NULL_NOTIFICATION_OBJ
   )
 
   useEffect(() => {
@@ -36,8 +37,13 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const setTimedNotification = (notificationObject) => {
+    setNotificationMessage(notificationObject)
+    setTimeout(() => {setNotificationMessage(NULL_NOTIFICATION_OBJ)}, 5000)
+  }
+
   const checkToUpdateContact = (personToUpdate) => {
-    if (confirm(`Do you want to update the contact of ${newName}`)){
+    if (confirm(`Do you want to update the contact of ${newName}?`)){
       // const personToUpdate = persons.find(p => p.name === name)
       const changedPerson = {...personToUpdate, number: newNumber}
       contactService.update(changedPerson)
@@ -45,7 +51,7 @@ const App = () => {
           (contactReturned) => {
             setPersonContact(persons.map(p => p.id === contactReturned.id ? contactReturned : p))
             resetFields()
-            setNotificationMessage({
+            setTimedNotification({
               type:'success',
               message:`Contact of ${contactReturned.name} was updated!`})
           }
@@ -65,8 +71,7 @@ const App = () => {
     ).then(data => {
       setPersonContact(persons.concat(data))
       resetFields()
-      setNotificationMessage({type:'success', message:`Added ${data.name}`})
-      // TODO: Make notification disappear after certain condition
+      setTimedNotification({type:'success', message:`Added ${data.name}`})
     }).catch(
       response => { alert(`Error to add case in the server ${response}`) }
     )
