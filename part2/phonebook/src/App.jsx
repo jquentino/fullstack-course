@@ -15,7 +15,7 @@ const App = () => {
 
   const [newFilter, setFilter] = useState('')
 
-  const NULL_NOTIFICATION_OBJ = {type: null, message: null}
+  const NULL_NOTIFICATION_OBJ = { type: null, message: null }
   const [notificationObj, setNotificationMessage] = useState(
     NULL_NOTIFICATION_OBJ
   )
@@ -39,23 +39,29 @@ const App = () => {
 
   const setTimedNotification = (notificationObject) => {
     setNotificationMessage(notificationObject)
-    setTimeout(() => {setNotificationMessage(NULL_NOTIFICATION_OBJ)}, 5000)
+    setTimeout(() => { setNotificationMessage(NULL_NOTIFICATION_OBJ) }, 5000)
   }
 
   const checkToUpdateContact = (personToUpdate) => {
-    if (confirm(`Do you want to update the contact of ${newName}?`)){
+    if (confirm(`Do you want to update the contact of ${newName}?`)) {
       // const personToUpdate = persons.find(p => p.name === name)
-      const changedPerson = {...personToUpdate, number: newNumber}
+      const changedPerson = { ...personToUpdate, number: newNumber }
       contactService.update(changedPerson)
         .then(
           (contactReturned) => {
             setPersonContact(persons.map(p => p.id === contactReturned.id ? contactReturned : p))
             resetFields()
             setTimedNotification({
-              type:'success',
-              message:`Contact of ${contactReturned.name} was updated!`})
-          }
-        )
+              type: 'success',
+              message: `Contact of ${contactReturned.name} was updated!`
+            })
+          })
+        .catch(() => {
+          setTimedNotification({
+            type: 'error',
+            message: `Information of ${changedPerson.name} has already been removed from server`
+          })
+        })
     } else {
       console.log('update contact operation canceled')
     }
@@ -71,7 +77,7 @@ const App = () => {
     ).then(data => {
       setPersonContact(persons.concat(data))
       resetFields()
-      setTimedNotification({type:'success', message:`Added ${data.name}`})
+      setTimedNotification({ type: 'success', message: `Added ${data.name}` })
     }).catch(
       response => { alert(`Error to add case in the server ${response}`) }
     )
@@ -85,7 +91,7 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     const personMatched = persons.find(p => p.name === newName)
-    const NameAreadyAdded = typeof(personMatched) !== 'undefined'
+    const NameAreadyAdded = typeof (personMatched) !== 'undefined'
     const NumberAlreadyAdded = persons.some(
       (person) => person.number == newNumber
     )
@@ -116,7 +122,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification messageObj={notificationObj}/>
+      <Notification messageObj={notificationObj} />
 
       <Filter value={newFilter} handleValueChange={handleFilterChange} />
 
@@ -131,7 +137,7 @@ const App = () => {
       />
       <h3>Numbers</h3>
 
-      <ContactsList contacts={persons} filterValue={newFilter} handleDeleteBtn={handleDeleteBtn}/>
+      <ContactsList contacts={persons} filterValue={newFilter} handleDeleteBtn={handleDeleteBtn} />
 
     </div>
   )
