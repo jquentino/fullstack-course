@@ -4,12 +4,15 @@ import { CountriesList } from './components/CountriesList'
 import countryService from './services/countries'
 import './App.css'
 import { CountryPage } from './components/CountryPage'
+import { Country } from './components/Country'
+import { WeatherInfo } from './components/WeatherInfo'
 
 function App() {
   const [inputCountry, setInputCountry] = useState('')
   const [allCountries, setAllCountryNames] = useState(null)
   const [currentCountry, setCurrentCountry] = useState(null)
   const [countriesToShow, setCountriesToShow] = useState([])
+  const [weatherInfo, setWeatherInfo] = useState(null)
 
   useEffect( // Get all country names from api in first render
       () => {
@@ -45,13 +48,11 @@ function App() {
     , [countriesToShow])
 
   if (!allCountries) {
-    return null
+      return null
   }
-
 
   const handleInputChange = (event) => {
     setInputCountry(event.target.value)
-    console.log(inputCountry)
   }
 
   const ShowCountry = (countryName) => {
@@ -62,7 +63,13 @@ function App() {
 
     countryService.getCountry(countryName.toLowerCase()).
     then(
-      (data) => setCurrentCountry(data)
+      (data) => {
+        setCurrentCountry(data)
+        countryService.getWeather(data.capital)
+        .then(
+          (data) => setWeatherInfo(data)
+        )
+      }
     )
   }
 
@@ -79,6 +86,7 @@ function App() {
     <div>
       <FindInput inputValue={inputCountry} handleInputFunc={handleInputChange}/>
       <CountryPage countryObj={currentCountry}/>
+      <WeatherInfo weatherObj={weatherInfo}/>
     </div>
   )
 }
