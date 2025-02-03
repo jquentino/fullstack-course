@@ -9,4 +9,9 @@ const getAll = () => {
   .then((response) => response.data)
 }
 
-export default {getAll, }
+const getCountry = (countryName) => {
+  return axios.get(`${API_URL}/${NAME_ENDPOINT}/${countryName}`)
+  .then((response) => response.data)
+}
+
+export default {getAll, getCountry}

@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const Country = ({ value }) => {
+export const Country = ({ value, showAction }) => {
   return (
-    <div>{value}</div>
+    <div>{value} <button onClick={() => showAction(value)}>show</button></div>
   )
 }
