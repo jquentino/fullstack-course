@@ -4,7 +4,6 @@ import { CountriesList } from './components/CountriesList'
 import countryService from './services/countries'
 import './App.css'
 import { CountryPage } from './components/CountryPage'
-import { Country } from './components/Country'
 import { WeatherInfo } from './components/WeatherInfo'
 
 function App() {
