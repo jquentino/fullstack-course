@@ -79,7 +79,15 @@ const App = () => {
       resetFields()
       setTimedNotification({ type: 'success', message: `Added ${data.name}` })
     }).catch(
-      response => { alert(`Error to add case in the server ${response}`) }
+      (error) => {
+        if (error.status === 400) {
+          console.log('error.error')
+          console.log(error)
+          setTimedNotification({ type: 'error', message: error.response.data.error })
+        } else {
+          setTimedNotification({ type: `error`, message: `Unexpected error to add case in the server ${error.message}` })
+        }
+      }
     )
   }
 
