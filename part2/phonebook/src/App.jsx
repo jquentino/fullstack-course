@@ -44,7 +44,6 @@ const App = () => {
 
   const checkToUpdateContact = (personToUpdate) => {
     if (confirm(`Do you want to update the contact of ${newName}?`)) {
-      // const personToUpdate = persons.find(p => p.name === name)
       const changedPerson = { ...personToUpdate, number: newNumber }
       contactService.update(changedPerson)
         .then(
@@ -56,11 +55,15 @@ const App = () => {
               message: `Contact of ${contactReturned.name} was updated!`
             })
           })
-        .catch(() => {
-          setTimedNotification({
-            type: 'error',
-            message: `Information of ${changedPerson.name} has already been removed from server`
-          })
+        .catch((error) => {
+          if (error.status === 400) {
+            setTimedNotification({ type: 'error', message: error.response.data.error })
+          } else {
+            setTimedNotification({
+              type: 'error',
+              message: `Information of ${changedPerson.name} has already been removed from server`
+            })
+          }
         })
     } else {
       console.log('update contact operation canceled')
@@ -81,8 +84,6 @@ const App = () => {
     }).catch(
       (error) => {
         if (error.status === 400) {
-          console.log('error.error')
-          console.log(error)
           setTimedNotification({ type: 'error', message: error.response.data.error })
         } else {
           setTimedNotification({ type: `error`, message: `Unexpected error to add case in the server ${error.message}` })
@@ -108,11 +109,11 @@ const App = () => {
       // alert(`${newName} is already added to phonebook`)
       checkToUpdateContact(personMatched)
     } else if (NumberAlreadyAdded) {
-      alert(`The number ${newNumber} is already added to the phonebook`) // TODO: Change these alerts by Notification
+      setTimedNotification({ type: 'error', message: `The number ${newNumber} is already added to the phonebook` })
     } else if (newName === '') {
-      alert(`You can't add a empty name`)
+      setTimedNotification({ type: 'error', message: `You can't add a empty name` })
     } else if (newNumber === '') {
-      alert(`You can't add a empty number`)
+      setTimedNotification({ type: 'error', message: `You can't add a empty number` })
     }
     else {
       AddNewContact()
